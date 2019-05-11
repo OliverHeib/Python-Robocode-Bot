@@ -3,7 +3,7 @@
 
 from robot import Robot #Import a base Robot
 
-class Charlier(Robot): #Create a Robot
+class MyBot(Robot): #Create a Robot
     
     def init(self):    #To initialyse your robot
         
