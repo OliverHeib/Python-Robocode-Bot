@@ -4,7 +4,7 @@
 from robot import Robot #Import a base Robot
 
 class MyBot(Robot): #Create a Robot
-    
+
     def init(self):    #To initialyse your robot
         
         
@@ -12,7 +12,7 @@ class MyBot(Robot): #Create a Robot
         self.setColor(0, 0, 0)
         self.setGunColor(66, 134, 244)
         self.setRadarColor(226, 111, 111)
-        self.setBulletsColor(71, 64, 64)
+        self.setBulletsColor(45, 0, 0)
 
         self.radarVisible(True) # if True the radar field is visible
         
@@ -20,13 +20,15 @@ class MyBot(Robot): #Create a Robot
         size = self.getMapSize()
         
         self.lockRadar("gun")
+        move = True
         
     
     def run(self): #main loop to command the bot
         
         #self.move(90) # for moving (negative values go back)
         #self.stop()
-        self.gunTurn(-90)
+        if (self.move):
+            self.gunTurn(-90)
         self.stop()
 
 
