@@ -9,10 +9,10 @@ class MyBot(Robot): #Create a Robot
         
         
         #Set the bot color in RGB
-        self.setColor(0, 200, 100)
-        self.setGunColor(200, 200, 0)
-        self.setRadarColor(255, 60, 0)
-        self.setBulletsColor(255, 150, 150)
+        self.setColor(0, 0, 0)
+        self.setGunColor(66, 134, 244)
+        self.setRadarColor(226, 111, 111)
+        self.setBulletsColor(71, 64, 64)
 
         self.radarVisible(True) # if True the radar field is visible
         
