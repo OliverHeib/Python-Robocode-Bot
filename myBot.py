@@ -20,21 +20,29 @@ class MyBot(Robot): #Create a Robot
         size = self.getMapSize()
         
         self.lockRadar("gun")
-        move = True
+        self.gt = True
+        self.count = True
         
     
     def run(self): #main loop to command the bot
         
         #self.move(90) # for moving (negative values go back)
         #self.stop()
-        if (self.move):
-            self.gunTurn(-90)
-        self.stop()
+        self.gunTurn(-20)
+
+        self.count = self.count + 1
+
+        if (self.count == 10):
+            self.gt = True
+            self.count = 0
+
+        #self.stop()
 
 
     def onHitWall(self):
         self.reset() #To reset the run fonction to the begining (auomatically called on hitWall, and robotHit event) 
         self.pause(100)
+        self.turn(30)
         self.move(-100)
         self.rPrint('ouch! a wall !')
 
@@ -50,16 +58,19 @@ class MyBot(Robot): #Create a Robot
     def onHitByBullet(self, bulletBotId, bulletBotName, bulletPower): #NECESARY FOR THE GAME
         """ When i'm hit by a bullet"""
         self.rPrint ("hit by " + str(bulletBotId) + "with power:" +str( bulletPower))
+        self.turn(20)
+        self.move(30)
         
     def onBulletHit(self, botId, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a bot"""
         self.rPrint ("fire done on " +str( botId))
-        self.gunTurn(-1)
+        #self.stop()
         
     def onBulletMiss(self, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a wall"""
         self.rPrint ("the bullet "+ str(bulletId) + " fail")
-        self.move = True
+        self.gt = True
+        #self.gunTurn(-45)
         
     def onRobotDeath(self):#NECESARY FOR THE GAME
         """When my bot die"""
@@ -70,7 +81,9 @@ class MyBot(Robot): #Create a Robot
         self.setRadarField("thin")
         self.rPrint("I see the bot:" + str(botId) + "on position: x:" + str(botPos.x()) + " , y:" + str(botPos.y()))
         #self.gunTurn(-1)
-        self.move = False
+        #self.gt = False
 
-        self.stop()
-        self.fire(5)
+        #self.stop()
+        
+        self.fire(10)
+        self.gunTurn(-5)
