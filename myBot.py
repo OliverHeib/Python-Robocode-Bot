@@ -21,6 +21,7 @@ class MyBot(Robot): #Create a Robot
         
         self.lockRadar("gun")
         move = True
+        self.count = True
         
     
     def run(self): #main loop to command the bot
@@ -28,7 +29,13 @@ class MyBot(Robot): #Create a Robot
         #self.move(90) # for moving (negative values go back)
         #self.stop()
         if (self.move):
-            self.gunTurn(-90)
+            self.gunTurn(-20)
+
+        self.count = self.count + 1
+
+        if (self.count == 10):
+            self.move = True
+
         self.stop()
 
 
@@ -50,14 +57,20 @@ class MyBot(Robot): #Create a Robot
     def onHitByBullet(self, bulletBotId, bulletBotName, bulletPower): #NECESARY FOR THE GAME
         """ When i'm hit by a bullet"""
         self.rPrint ("hit by " + str(bulletBotId) + "with power:" +str( bulletPower))
+        self.move(90)
         
     def onBulletHit(self, botId, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a bot"""
         self.rPrint ("fire done on " +str( botId))
+        self.fire(3)
+        self.move = False
+        #self.gunTurn(-45)
+        self.stop()
         
     def onBulletMiss(self, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a wall"""
         self.rPrint ("the bullet "+ str(bulletId) + " fail")
+        self.move = True
         
     def onRobotDeath(self):#NECESARY FOR THE GAME
         """When my bot die"""
@@ -67,7 +80,8 @@ class MyBot(Robot): #Create a Robot
         "when the bot see another one"
         self.setRadarField("thin")
         self.rPrint("I see the bot:" + str(botId) + "on position: x:" + str(botPos.x()) + " , y:" + str(botPos.y()))
-        self.gunTurn(-5)
+        #self.gunTurn(-1)
+        self.move = False
 
         self.stop()
-        self.fire(5)
+        self.fire(1)
