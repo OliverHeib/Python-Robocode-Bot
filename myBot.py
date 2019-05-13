@@ -30,12 +30,6 @@ class MyBot(Robot): #Create a Robot
         #self.stop()
         self.gunTurn(-20)
 
-        self.count = self.count + 1
-
-        if (self.count == 10):
-            self.gt = True
-            self.count = 0
-
         #self.stop()
 
 
@@ -43,7 +37,7 @@ class MyBot(Robot): #Create a Robot
         self.reset() #To reset the run fonction to the begining (auomatically called on hitWall, and robotHit event) 
         self.pause(100)
         self.turn(30)
-        self.move(-100)
+        self.move(-30)
         self.rPrint('ouch! a wall !')
 
     def sensors(self): #NECESARY FOR THE GAME
@@ -64,13 +58,17 @@ class MyBot(Robot): #Create a Robot
     def onBulletHit(self, botId, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a bot"""
         self.rPrint ("fire done on " +str( botId))
+        self.count = 0
         #self.stop()
         
     def onBulletMiss(self, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a wall"""
         self.rPrint ("the bullet "+ str(bulletId) + " fail")
-        self.gt = True
-        #self.gunTurn(-45)
+        self.count = self.count + 1
+        if(self.count > 3):
+            self.gunTurn(-45)
+            self.move(-30)
+            self.count = 0
         
     def onRobotDeath(self):#NECESARY FOR THE GAME
         """When my bot die"""
