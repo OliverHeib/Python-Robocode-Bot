@@ -20,25 +20,26 @@ class MyBot(Robot): #Create a Robot
         size = self.getMapSize()
         
         self.lockRadar("gun")
-        self.gt = True
-        self.count = True
+        self.count = True #count when shots missed
+        self.turnNo = 0 #counts every time run is exected
+        self.direction = 1 # direction of movement when not in range
         
     
     def run(self): #main loop to command the bot
         
-        #self.move(90) # for moving (negative values go back)
-        #self.stop()
-        self.gunTurn(-20)
-
-        #self.stop()
+        self.turnNo = self.turnNo + 1 # increment turn
+        self.gunTurn(-20) # rotate gun
+        if(self.turnNo > 40):# if not in range move
+            self.turn(5*self.direction)
+            self.move(40)
 
 
     def onHitWall(self):
-        self.reset() #To reset the run fonction to the begining (auomatically called on hitWall, and robotHit event) 
-        self.pause(100)
+        self.reset() #To reset the run fonction to the begining
         self.turn(30)
-        self.move(-30)
+        self.move(25)
         self.rPrint('ouch! a wall !')
+        self.direction = -self.direction
 
     def sensors(self): #NECESARY FOR THE GAME
         pass
@@ -52,21 +53,21 @@ class MyBot(Robot): #Create a Robot
     def onHitByBullet(self, bulletBotId, bulletBotName, bulletPower): #NECESARY FOR THE GAME
         """ When i'm hit by a bullet"""
         self.rPrint ("hit by " + str(bulletBotId) + "with power:" +str( bulletPower))
-        self.turn(20)
-        self.move(30)
+        self.turn(-20)
+        self.move(-40)
         
     def onBulletHit(self, botId, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a bot"""
         self.rPrint ("fire done on " +str( botId))
         self.count = 0
-        #self.stop()
         
     def onBulletMiss(self, bulletId):#NECESARY FOR THE GAME
         """when my bullet hit a wall"""
         self.rPrint ("the bullet "+ str(bulletId) + " fail")
+        #if missing for two turns move
         self.count = self.count + 1
-        if(self.count > 3):
-            self.gunTurn(-45)
+        if(self.count > 2):
+            self.Turn(-20)
             self.move(-30)
             self.count = 0
         
@@ -78,10 +79,15 @@ class MyBot(Robot): #Create a Robot
         "when the bot see another one"
         self.setRadarField("thin")
         self.rPrint("I see the bot:" + str(botId) + "on position: x:" + str(botPos.x()) + " , y:" + str(botPos.y()))
-        #self.gunTurn(-1)
-        #self.gt = False
 
-        #self.stop()
+        #Scatter fire
+        self.fire(4)
+        self.gunTurn(-2)
+        self.stop()
+        self.fire(6)
+        self.gunTurn(2)
+        self.stop()
+        self.fire(4)
+        self.gunTurn(-4)
         
-        self.fire(10)
-        self.gunTurn(-5)
+        self.turnNo = 0 #Reset turn counter
